@@ -1,0 +1,14 @@
+---
+  el:
+    hosts:
+      nice_wilbur:
+        ansible_connection: docker
+  deb:
+    hosts:
+      beautiful_grothendieck:
+        ansible_connection: docker
+
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
