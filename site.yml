@@ -29,9 +29,6 @@
           - clickhouse-server-{{ clickhouse_version }}.rpm
       notify: Start clickhouse service
 
-    - name: Flush handlers
-      meta: flush_handlers
-
     - name: Create database
       ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
       register: create_db
@@ -42,6 +39,13 @@
   hosts: vector
   become: yes
   become_user: root
+  handlers:
+    - name: Start vector service
+      become: true
+      ansible.builtin.service:
+        name: vector
+        state: restarted
+
   tasks:
     - block:
         - name: Get vector distrib
@@ -55,19 +59,12 @@
         name:
           - vector-{{ vector_version }}.rpm
 
-    - name: Start Vector service
-      become: true
-      ansible.builtin.service:
-        name: vector
-        state: restarted
-
     - name: write using jinja2
       ansible.builtin.template:
          src: ./group_vars/vector.yaml.j2
          mode: 0644
          dest: /etc/vector/vector.yaml
-         owner: bin
-         group: wheel
-    - name: Restart Vector
-      become: true
-      ansible.builtin.command: "systemctl restart vector"
+         owner: vector
+         group: vector
+      notify: Start vector service
+
