@@ -10,10 +10,3 @@ vector:
     vector-01:
       ansible_host: 158.160.126.113
       ansible_user: centos
-
-lighthouse:
-  hosts:
-    lighthouse-01:
-      ansible_host: 84.201.134.103
-      ansible_user: centos
-
