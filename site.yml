@@ -101,9 +101,10 @@
          dest: /etc/nginx/nginx.conf
          owner: nginx
          group: nginx
-      notify:
-        - nginx systemd
+
     - name: Clone repo
       ansible.builtin.git:
          repo: https://github.com/VKCOM/lighthouse.git
          dest: /usr/share/nginx/index
+      notify:
+        - nginx systemd
